@@ -7,6 +7,7 @@ public class PlatformAttach : MonoBehaviour
     public GameObject Player;
     public GameObject[] waypoint;
     int currentWaypointIndex = 0;
+    bool playerOn = false;
 
     float speed = 1f;
 
@@ -28,7 +29,14 @@ public class PlatformAttach : MonoBehaviour
             }
         }
 
-        transform.position = Vector3.MoveTowards(transform.position, waypoint[currentWaypointIndex].transform.position, speed * Time.deltaTime);
+        if(playerOn == true)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, waypoint[currentWaypointIndex].transform.position, speed * Time.deltaTime);
+        }
+        else
+        {
+            transform.position = Vector3.MoveTowards(transform.position, waypoint[0].transform.position, speed * Time.deltaTime);
+        }
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -37,6 +45,8 @@ public class PlatformAttach : MonoBehaviour
             Debug.Log("Enter");
 
             other.transform.parent = transform;
+
+            playerOn = true;
         }
     }
 
@@ -47,6 +57,7 @@ public class PlatformAttach : MonoBehaviour
             Debug.Log("Exit");
 
             other.transform.parent = null;
+            playerOn = false;
         }
     }
 }
